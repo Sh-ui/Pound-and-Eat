@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shui's Pounded Meal Generator</title>
+    <meta name="description" content="Generate no-cutting-board meal ideas using global pounding techniques. Create rustic, flavorful dishes with minimal prep.">
+    <meta name="keywords" content="pounded food, molcajete, mortar and pestle, meal ideas, global cuisine, no cutting board">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e76f51">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Meal Generator">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Shui's Pounded Meal Generator</h1>
+            <p class="tagline">No cutting board. All flavor. Pure intuition.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="generator-section">
+            <div class="control-panel">
+                <button id="generate-btn" class="primary-btn">Generate Meal Idea</button>
+                
+                <div class="filters">
+                    <details>
+                        <summary>Filters (Optional)</summary>
+                        <div class="filter-options">
+                            <div class="filter-group">
+                                <h3>Cuisine</h3>
+                                <select id="cuisine-filter">
+                                    <option value="">Any Cuisine</option>
+                                    <!-- Will be populated by JS -->
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <h3>Protein</h3>
+                                <select id="protein-filter">
+                                    <option value="">Any Protein</option>
+                                    <!-- Will be populated by JS -->
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <h3>Flavor Profile</h3>
+                                <select id="flavor-filter">
+                                    <option value="">Any Flavor</option>
+                                    <!-- Will be populated by JS -->
+                                </select>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            
+            <div id="result" class="result hidden">
+                <div class="recipe-card">
+                    <h2 id="meal-title">Your meal idea will appear here</h2>
+                    <div class="recipe-meta">
+                        <span id="flavor-profile"></span>
+                    </div>
+                    <ol id="instructions" class="instructions"></ol>
+                    <div class="recipe-notes">
+                        <p id="notes"></p>
+                    </div>
+                    <div class="recipe-actions">
+                        <button id="save-btn" class="secondary-btn">Save This Idea</button>
+                        <button id="share-btn" class="secondary-btn">Share</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="saved-ideas">
+            <h2>Saved Ideas</h2>
+            <div id="saved-list" class="saved-list">
+                <p class="empty-state">Your saved meal ideas will appear here</p>
+                <!-- Saved meals will be inserted here by JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Created by Shui | Inspired by pounded Thai salads and other global techniques | <a href="https://github.com/yourusername/pound-and-eat" target="_blank">GitHub</a></p>
+        </div>
+    </footer>
+
+    <!-- Load components and templates first -->
+    <script src="js/components.js"></script>
+    <!-- Main application logic -->
+    <script src="js/generator.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
