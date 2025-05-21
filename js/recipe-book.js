@@ -163,5 +163,111 @@ function populateRecipeBook() {
     });
 }
 
-// Initialize recipe book when DOM is loaded
-document.addEventListener('DOMContentLoaded', populateRecipeBook); 
+// Helper: Flatten all recipes into a single array with category
+function getAllRecipesWithCategory() {
+    const all = [];
+    Object.entries(recipeBook).forEach(([category, recipes]) => {
+        recipes.forEach(recipe => {
+            all.push({ ...recipe, category });
+        });
+    });
+    return all;
+}
+
+// Helper: Pick a random recipe
+function getRandomRecipe() {
+    const all = getAllRecipesWithCategory();
+    return all[Math.floor(Math.random() * all.length)];
+}
+
+// Render a single recipe card (with category)
+function renderRecipeOfTheDayCard(recipe) {
+    const card = document.createElement('div');
+    card.className = 'recipe-card';
+    
+    const title = document.createElement('h4');
+    title.textContent = recipe.title;
+    
+    const category = document.createElement('div');
+    category.className = 'recipe-category-label';
+    category.textContent =
+        recipe.category === 'stews' ? 'Stews & Hearty Dishes' :
+        recipe.category === 'stirfries' ? 'Stir-Fries & Sautéed Dishes' :
+        recipe.category === 'wraps' ? 'Leaf-Wrapped & Hand-Eaten Dishes' :
+        '';
+    category.style.fontWeight = 'bold';
+    category.style.color = '#e76f51';
+    category.style.marginBottom = '0.5rem';
+    
+    const description = document.createElement('p');
+    description.textContent = recipe.description;
+    
+    const workflow = document.createElement('ol');
+    recipe.workflow.forEach(step => {
+        const li = document.createElement('li');
+        li.textContent = step;
+        workflow.appendChild(li);
+    });
+    
+    card.appendChild(title);
+    card.appendChild(category);
+    card.appendChild(description);
+    card.appendChild(workflow);
+    
+    return card;
+}
+
+// Show Recipe of the Day
+function showRecipeOfTheDay(recipe) {
+    const container = document.getElementById('recipe-of-the-day-card');
+    container.innerHTML = '';
+    container.appendChild(renderRecipeOfTheDayCard(recipe));
+}
+
+// State
+let currentRecipeOfTheDay = null;
+let recipeBookVisible = false;
+
+// Reroll handler
+function rerollRecipeOfTheDay() {
+    let newRecipe;
+    do {
+        newRecipe = getRandomRecipe();
+    } while (currentRecipeOfTheDay && newRecipe.title === currentRecipeOfTheDay.title);
+    currentRecipeOfTheDay = newRecipe;
+    showRecipeOfTheDay(currentRecipeOfTheDay);
+}
+
+// Toggle full recipe book
+function toggleRecipeBook() {
+    recipeBookVisible = !recipeBookVisible;
+    const section = document.getElementById('recipe-book-section');
+    const btn = document.getElementById('toggle-recipe-book-btn');
+    if (recipeBookVisible) {
+        section.style.display = '';
+        btn.textContent = 'Hide Recipe Book';
+    } else {
+        section.style.display = 'none';
+        btn.textContent = 'Show Full Recipe Book';
+    }
+}
+
+// On DOMContentLoaded, show recipe of the day and set up buttons
+function initializeRecipeOfTheDay() {
+    rerollRecipeOfTheDay();
+    document.getElementById('reroll-recipe-btn').addEventListener('click', rerollRecipeOfTheDay);
+    document.getElementById('toggle-recipe-book-btn').addEventListener('click', toggleRecipeBook);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeRecipeOfTheDay();
+    if (recipeBookVisible) populateRecipeBook(); // Only populate if visible
+});
+
+// Populate full book if/when shown
+const observer = new MutationObserver(() => {
+    if (recipeBookVisible && document.getElementById('stew-recipes').children.length === 0) {
+        populateRecipeBook();
+    }
+});
+observer.observe(document.getElementById('recipe-book-section'), { attributes: true, attributeFilter: ['style'] }); 
