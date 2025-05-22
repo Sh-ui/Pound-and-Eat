@@ -139,6 +139,9 @@ function createRecipeCard(recipe) {
     card.appendChild(description);
     card.appendChild(workflow);
     
+    // Add FABs
+    card.appendChild(createRecipeFABs(recipe));
+    
     return card;
 }
 
@@ -180,6 +183,70 @@ function getRandomRecipe() {
     return all[Math.floor(Math.random() * all.length)];
 }
 
+// Create FAB buttons for recipe cards
+function createRecipeFABs(recipe) {
+    const fabContainer = document.createElement('div');
+    fabContainer.className = 'recipe-actions-fab';
+    
+    // Save button
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'fab-btn';
+    saveBtn.title = 'Save Recipe';
+    saveBtn.innerHTML = `
+        <svg viewBox="0 0 24 24">
+            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/>
+        </svg>
+    `;
+    saveBtn.addEventListener('click', () => saveRecipe(recipe));
+    
+    // Reroll button (only for recipe of the day)
+    if (recipe === currentRecipeOfTheDay) {
+        const rerollBtn = document.createElement('button');
+        rerollBtn.className = 'fab-btn';
+        rerollBtn.title = 'New Recipe';
+        rerollBtn.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
+            </svg>
+        `;
+        rerollBtn.addEventListener('click', rerollRecipeOfTheDay);
+        fabContainer.appendChild(rerollBtn);
+    }
+    
+    fabContainer.appendChild(saveBtn);
+    return fabContainer;
+}
+
+// Save recipe to saved ideas
+function saveRecipe(recipe) {
+    const savedList = document.getElementById('saved-list');
+    const emptyState = savedList.querySelector('.empty-state');
+    if (emptyState) {
+        emptyState.remove();
+    }
+    
+    const savedItem = document.createElement('div');
+    savedItem.className = 'saved-item';
+    savedItem.appendChild(renderRecipeOfTheDayCard(recipe));
+    
+    // Add remove button
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'fab-btn';
+    removeBtn.style.position = 'absolute';
+    removeBtn.style.top = '0.5rem';
+    removeBtn.style.right = '0.5rem';
+    removeBtn.title = 'Remove Recipe';
+    removeBtn.innerHTML = `
+        <svg viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+    `;
+    removeBtn.addEventListener('click', () => savedItem.remove());
+    savedItem.appendChild(removeBtn);
+    
+    savedList.appendChild(savedItem);
+}
+
 // Render a single recipe card (with category)
 function renderRecipeOfTheDayCard(recipe) {
     const card = document.createElement('div');
@@ -213,6 +280,9 @@ function renderRecipeOfTheDayCard(recipe) {
     card.appendChild(category);
     card.appendChild(description);
     card.appendChild(workflow);
+    
+    // Add FABs
+    card.appendChild(createRecipeFABs(recipe));
     
     return card;
 }
