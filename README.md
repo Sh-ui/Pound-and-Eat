@@ -4,7 +4,7 @@ A web app that generates meal ideas using the pounding technique inspired by glo
 
 ## Live Demo
 
-Visit the live version: [https://yourusername.github.io/pound-and-eat](https://yourusername.github.io/pound-and-eat)
+Visit the live version: [https://sh-ui.github.io/Pound-and-Eat/](https://sh-ui.github.io/Pound-and-Eat/)
 
 ## About
 
