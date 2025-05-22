@@ -123,7 +123,7 @@ class MealGeneratorUI {
     });
     
     // Update notes
-    this.notes.textContent = '';
+    this.notes.textContent = `This ${mealIdea.cuisine} dish uses the ${mealIdea.template} workflow. The irregular textures from pounding create a rustic, satisfying meal with minimal prep.`;
     
     // Add cuisine-specific tips
     const tipElement = document.createElement('p');
